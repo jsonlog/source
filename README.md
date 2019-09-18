@@ -7,8 +7,23 @@
 # Done is better than perfect --facebook
 # Eat our own dog food -- Microsoft
 
+<!-- .gradle/caches/modules-2/files-2.1 -->
+<!-- .m2/repository -->
 
-# maven-repository
+典型的一个maven依赖下会有这三个文件：
+maven-metadata.xml
+maven-metadata.xml.md5
+maven-metadata.xml.sha1
+maven-metadata.xml里面记录了最后deploy的版本和时间。
+其中md5, sha1校验文件是用来保证这个meta文件的完整性。
+maven在编绎项目时，会先尝试请求maven-metadata.xml，如果没有找到，则会直接尝试请求到jar文件，在下载jar文件时也会尝试下载jar的md5, sha1文件。
+maven-metadata.xml文件很重要，如果没有这个文件来指明最新的jar版本，那么即使远程仓库里的jar更新了版本，本地maven编绎时用上[-U](https://links.jianshu.com/go?to=http%3A%2F%2Fmaven.apache.org%2Fref%2F3.2.2%2Fmaven-repository-metadata%2Frepository-metadata.html)参数，也不会拉取到最新的jar！
+
+
+
+
+
+# source
 
 基于github搭建的个人项目仓库
 
@@ -24,11 +39,11 @@ xml 配置如下
 <repositories>
     <repository>
         <id>yihui-maven-repo-snap</id>
-        <url>https://raw.githubusercontent.com/liuyueyi/maven-repository/snapshot/repository</url>
+        <url>https://raw.githubusercontent.com/jsonlog/source/snapshot/repository</url>
     </repository>
     <repository>
         <id>yihui-maven-repo-release</id>
-        <url>https://raw.githubusercontent.com/liuyueyi/maven-repository/release/repository</url>
+        <url>https://raw.githubusercontent.com/jsonlog/source/release/repository</url>
     </repository>
 </repositories>
 ```
@@ -39,7 +54,7 @@ xml 配置如下
 <repositories>
     <repository>
         <id>yihui-maven-repo</id>
-        <url>https://raw.githubusercontent.com/liuyueyi/maven-repository/master/repository</url>
+        <url>https://raw.githubusercontent.com/jsonlog/source/master/repository</url>
     </repository>
 </repositories>
 ```
@@ -57,19 +72,19 @@ xml 配置如下
 
 首先是在github上新建一个仓库，命令随意，如我新建项目为
 
-- [https://github.com/liuyueyi/maven-repository](https://github.com/liuyueyi/maven-repository)
+- [https://github.com/jsonlog/source](https://github.com/jsonlog/source)
 
 
 ### 2. 配置本地仓库
 
-本地指定一个目录，新建文件夹 `maven-repository`, 如我的本地配置如下
+本地指定一个目录，新建文件夹 `source`, 如我的本地配置如下
 
 ```sh
 ## 进入目录
 cd /Users/yihui/GitHub
 
 ## 新建目录
-mkdir maven-repository; cd maven-repository
+mkdir source; cd source
 
 ## 新建repository目录
 # 这个目录下面就是存放我们deploy的项目相关信息
@@ -93,7 +108,7 @@ touch README.md
 ```sh
 git add .
 git commit -m 'first comit'
-git remote add origin https://github.com/liuyueyi/maven-repository.git
+git remote add origin https://github.com/jsonlog/source.git
 git push -u origin master
 ```
 
@@ -122,7 +137,7 @@ git push origin release
 
 ```sh
 ## deploy项目到本地仓库
-mvn clean deploy -Dmaven.test.skip  -DaltDeploymentRepository=self-mvn-repo::default::file:/Users/yihui/GitHub/maven-repository/repository
+mvn clean deploy -Dmaven.test.skip  -DaltDeploymentRepository=self-mvn-repo::default::file:/Users/yihui/GitHub/source/repository
 ```
 
 上面的命令就比较常见了，主要需要注意的是file后面的参数，根据自己前面设置的本地仓库目录来进行替换
@@ -145,7 +160,7 @@ fi
 ## deploy参数，snapshot 表示快照包，简写为s， release表示正式包，简写为r
 arg=$1
 
-DEPLOY_PATH=/Users/yihui/GitHub/maven-repository/
+DEPLOY_PATH=/Users/yihui/GitHub/source/
 CURRENT_PATH=`pwd`
 
 deployFunc(){
@@ -156,7 +171,7 @@ deployFunc(){
   git checkout $br
   cd $CURRENT_PATH
   # 开始deploy
-  mvn clean deploy -Dmaven.test.skip  -DaltDeploymentRepository=self-mvn-repo::default::file:/Users/yihui/GitHub/maven-repository/repository
+  mvn clean deploy -Dmaven.test.skip  -DaltDeploymentRepository=self-mvn-repo::default::file:/Users/yihui/GitHub/source/repository
 
   # deploy 完成,提交
   cd $DEPLOY_PATH
@@ -213,11 +228,11 @@ chmod +x deploy.sh
 <repositories>
     <repository>
         <id>yihui-maven-repo-snap</id>
-        <url>https://raw.githubusercontent.com/liuyueyi/maven-repository/snapshot/repository</url>
+        <url>https://raw.githubusercontent.com/jsonlog/source/snapshot/repository</url>
     </repository>
     <repository>
         <id>yihui-maven-repo-release</id>
-        <url>https://raw.githubusercontent.com/liuyueyi/maven-repository/release/repository</url>
+        <url>https://raw.githubusercontent.com/jsonlog/source/release/repository</url>
     </repository>
 </repositories>
 ```
@@ -228,7 +243,7 @@ chmod +x deploy.sh
 <repositories>
     <repository>
         <id>yihui-maven-repo</id>
-        <url>https://raw.githubusercontent.com/liuyueyi/maven-repository/master/repository</url>
+        <url>https://raw.githubusercontent.com/jsonlog/source/master/repository</url>
     </repository>
 </repositories>
 ```
@@ -243,20 +258,3 @@ chmod +x deploy.sh
   <version>0.1</version>
 </dependency>
 ```
-
-
-
-## IV. 其他
-
-### 个人博客： [Z+|blog](https://liuyueyi.github.io/hexblog)
-
-基于hexo + github pages搭建的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛
-
-
-### 声明
-
-尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见识有限，如发现bug或者有更好的建议，随时欢迎批评指正，我的微博地址: [小灰灰Blog](https://weibo.com/p/1005052169825577/home)
-
-### 扫描关注
-
-![QrCode](https://s17.mogucdn.com/mlcdn/c45406/180209_74fic633aebgh5dgfhid2fiiggc99_1220x480.png)

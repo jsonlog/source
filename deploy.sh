@@ -8,7 +8,7 @@ fi
 ## deploy参数，snapshot 表示快照包，简写为s， release表示正式包，简写为r
 arg=$1
 
-DEPLOY_PATH=/Users/yihui/GitHub/maven-repository/
+DEPLOY_PATH=/Users/mine/GitHub/source/
 CURRENT_PATH=`pwd`
 
 deployFunc(){
@@ -19,7 +19,7 @@ deployFunc(){
   git checkout $br
   cd $CURRENT_PATH
   # 开始deploy
-  mvn clean deploy -Dmaven.test.skip  -DaltDeploymentRepository=self-mvn-repo::default::file:/Users/user/Project/GitHub/maven-repository/repository
+  mvn clean deploy -Dmaven.test.skip  -DaltDeploymentRepository=self-mvn-repo::default::file:/Users/mine/GitHub/source/repository
 
   # deploy 完成,提交
   cd $DEPLOY_PATH
