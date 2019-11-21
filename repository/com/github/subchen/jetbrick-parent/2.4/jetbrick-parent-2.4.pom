@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.subchen</groupId>
+    <artifactId>jetbrick-parent</artifactId>
+    <version>2.4</version>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>parent pom.xml of jetbrick framework</description>
+    <url>http://subchen.github.io/jetbrick/</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>jetbrick</name>
+        <url>https://github.com/jetbrick</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Guoqiang Chen</name>
+            <email>subchen@gmail.com</email>
+            <url>https://github.com/subchen</url>
+            <roles>
+                <role>owner</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:subchen/jetbrick.git</connection>
+        <developerConnection>scm:git:git@github.com:subchen/jetbrick.git</developerConnection>
+        <url>git@github.com:subchen/jetbrick.git</url>
+    </scm>
+
+    <issueManagement>
+        <system>github issue</system>
+        <url>https://github.com/subchen/jetbrick/issues</url>
+    </issueManagement>
+
+    <repositories>
+        <repository>
+            <id>oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <!-- compiler -->
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.debug>true</maven.compiler.debug>
+
+        <!-- test -->
+        <maven.test.skip>true</maven.test.skip>
+
+        <!-- javadoc -->
+        <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+
+        <!-- version of dependency -->
+        <jetbrick.commons.version>2.0</jetbrick.commons.version>
+
+        <servlet.version>3.0.1</servlet.version>
+        <slf4j.version>1.7.7</slf4j.version>
+        <junit.version>4.11</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <compilerArgument>-Xlint:all</compilerArgument>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.17</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <archive>
+                            <addMavenDescriptor>true</addMavenDescriptor>
+                            <manifest>
+                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.8</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.9</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.3.2</version>
+                    <configuration>
+                        <!-- To suppress following warning
+                             Warning: killAfter is now deprecated. Do you need it ? Please comment on MEXEC-6 -->
+                        <killAfter>-1</killAfter>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>format</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.mycila.maven-license-plugin</groupId>
+                        <artifactId>maven-license-plugin</artifactId>
+                        <version>1.10.b1</version>
+                        <configuration>
+                            <header>${basedir}/LICENSE.txt</header>
+                            <strictCheck>true</strictCheck>
+                            <includes>
+                                <include>src/main/java/**/*.java</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>format</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+                        <artifactId>maven-java-formatter-plugin</artifactId>
+                        <version>0.4</version>
+                        <configuration>
+                            <configFile>jetbrick-eclipse-formatter.xml</configFile>
+                            <overrideConfigCompilerVersion>true</overrideConfigCompilerVersion>
+                            <lineEnding>LF</lineEnding>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>jetbrick-eclipse-formatter</artifactId>
+                                <version>1.0</version>
+                             </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>format</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>jacoco</id>
+
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+                <maven.test.failure.ignore>true</maven.test.failure.ignore>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.7.2.201409121644</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>jetbrick/bean/asm/delegate/*</exclude>
+                            </excludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>jacoco-prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>jacoco-report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>oss</id>
+
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+                <autoReleaseAfterClose>false</autoReleaseAfterClose>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.3</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                            <quiet>true</quiet>
+                            <splitindex>true</splitindex>
+                            <show>public</show>
+                            <source>${maven.compiler.source}</source>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.3</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>oss-staging</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>${autoReleaseAfterClose}</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

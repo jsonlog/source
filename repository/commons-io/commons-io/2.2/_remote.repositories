@@ -1,0 +1,7 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Jan 17 16:46:40 CST 2017
+commons-io-2.2.jar>nexus=
+commons-io-2.2.pom>nexus=
+commons-io-2.2.jar>central=
+commons-io-2.2.pom>central=
+commons-io-2.2-sources.jar>central=

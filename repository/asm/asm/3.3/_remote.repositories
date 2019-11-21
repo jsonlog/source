@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Jan 17 16:46:39 CST 2017
+asm-3.3.pom>nexus=
+asm-3.3.jar>nexus=
+asm-3.3.jar>central=
+asm-3.3.pom>central=

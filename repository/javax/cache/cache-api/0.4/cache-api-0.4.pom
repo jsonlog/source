@@ -1,0 +1,231 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+        <!--Fixes broken Maven 3 warning-->
+        <relativePath/>
+    </parent>
+    <groupId>javax.cache</groupId>
+    <artifactId>cache-api</artifactId>
+    <version>0.4</version>
+    <packaging>jar</packaging>
+
+    <name>JSR107 API and SPI</name>
+    <url>https://github.com/jsr107/jsr107spec</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!--This is only needed if you are using a CDI based implementation of the annotations support.
+            In CDI 1.1. we should be able to remove this dependency completely. -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.0-SP4</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsr250-api</artifactId>
+                    <groupId>javax.annotation</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jboss-interceptors-api_1.1_spec</artifactId>
+                    <groupId>org.jboss.spec.javax.interceptor</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>javax.inject</artifactId>
+                    <groupId>javax.inject</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.0.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>${basedir}/checkstyle/checkstyle.xml
+                    </configLocation>
+                    <suppressionsLocation>${basedir}/checkstyle/suppressions.xml
+                    </suppressionsLocation>
+                    <headerLocation>${basedir}/checkstyle/ClassHeader.txt
+                    </headerLocation>
+                    <enableRSS>false</enableRSS>
+                    <linkXRef>true</linkXRef>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                    <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                    <enableRulesSummary>true</enableRulesSummary>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <_include>bnd.bnd</_include>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <profiles>
+        <profile>
+            <!--Only releases need to be signed. Use mvn -Prelease clean deploy to deploy releases -->
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <scm>
+        <connection>scm:git:git@github.com:juven/git-demo.git</connection>
+        <developerConnection>scm:git:git@github.com:juven/git-demo.git</developerConnection>
+        <url>git@github.com:juven/git-demo.git</url>
+    </scm>
+
+
+    <!-- Note: site URL repeated here to ensure correct deployment path -->
+    <!--<distributionManagement>-->
+    <!--&lt;!&ndash;-->
+    <!--The server id here defined must also appear in ~/.m2/settings.xml with username-->
+    <!--&ndash;&gt;-->
+    <!--<repository>-->
+    <!--<id>sourceforge-releases</id>-->
+    <!--<name>Sourceforge Release Repository</name>-->
+    <!--<url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>-->
+    <!--</repository>-->
+    <!--<snapshotRepository>-->
+    <!--<id>sourceforge-snapshots</id>-->
+    <!--<name>Sourceforge Snapshot Repository</name>-->
+    <!--<url>http://oss.sonatype.org/content/repositories/sourceforge-snapshots</url>-->
+    <!--</snapshotRepository>-->
+    <!--</distributionManagement>-->
+
+
+    <!--<distributionManagement>-->
+    <!--&lt;!&ndash;-->
+    <!--The server id here defined must also appear in ~/.m2/settings.xml-->
+    <!--with username Note: site URL repeated here to ensure correct-->
+    <!--deployment path-->
+    <!--&ndash;&gt;-->
+    <!--<site>-->
+    <!--<id>ehcache.org</id>-->
+    <!--<name>EHCache Site</name>-->
+    <!--<url>dav:https://echache-stage.terracotta.lan/export1/ehcache.org-->
+    <!--</url>-->
+    <!--</site>-->
+
+    <!--</distributionManagement>-->
+
+</project>

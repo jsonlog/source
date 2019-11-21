@@ -1,0 +1,7 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Jan 17 16:46:46 CST 2017
+junit-3.8.1.jar>nexus=
+junit-3.8.1.pom>nexus=
+junit-3.8.1.jar>central=
+junit-3.8.1.pom>central=
+junit-3.8.1-sources.jar>central=
