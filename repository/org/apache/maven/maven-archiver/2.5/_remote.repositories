@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Jan 17 16:46:49 CST 2017
+maven-archiver-2.5.jar>central=
+maven-archiver-2.5.pom>nexus=
+maven-archiver-2.5.pom>central=
+maven-archiver-2.5.jar>nexus=
