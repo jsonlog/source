@@ -1,16 +1,8 @@
-# Stay Hungry,Stay Foolish
-# Garbage in, Garbage out
-# Read the fucking source code RTFSC
-# Talk is cheap. Show me the code. -- Linus Torvalds
-# You build it, You run it. -- Werner Vogels(Amazon)
-# Go big or go home --facebook
-# Done is better than perfect --facebook
-# Eat our own dog food -- Microsoft
-
 <!-- .gradle/caches/modules-2/files-2.1 -->
 <!-- .m2/repository -->
 
-典型的一个maven依赖下会有这三个文件：
+# 典型的一个maven依赖下会有这三个文件：
+```
 maven-metadata.xml
 maven-metadata.xml.md5
 maven-metadata.xml.sha1
@@ -18,10 +10,7 @@ maven-metadata.xml里面记录了最后deploy的版本和时间。
 其中md5, sha1校验文件是用来保证这个meta文件的完整性。
 maven在编绎项目时，会先尝试请求maven-metadata.xml，如果没有找到，则会直接尝试请求到jar文件，在下载jar文件时也会尝试下载jar的md5, sha1文件。
 maven-metadata.xml文件很重要，如果没有这个文件来指明最新的jar版本，那么即使远程仓库里的jar更新了版本，本地maven编绎时用上[-U](https://links.jianshu.com/go?to=http%3A%2F%2Fmaven.apache.org%2Fref%2F3.2.2%2Fmaven-repository-metadata%2Frepository-metadata.html)参数，也不会拉取到最新的jar！
-
-
-
-
+```
 
 # source
 
